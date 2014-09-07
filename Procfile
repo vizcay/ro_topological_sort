@@ -1,1 +1,1 @@
-web: bundle exec restful_server.rb topological_sort.rb -p $PORT
+web: bundle exec restful_server.rb topological_sort.rb $BASE_URL -p $PORT

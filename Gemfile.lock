@@ -5,7 +5,7 @@ GEM
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
-    restful_objects (0.0.3)
+    restful_objects (0.0.4)
       sinatra (= 1.4.4)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -25,5 +25,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  restful_objects (= 0.0.3)
+  restful_objects (= 0.0.4)
   rspec (~> 2.14)
