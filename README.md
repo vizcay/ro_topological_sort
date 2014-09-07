@@ -45,6 +45,52 @@ $ bundle exec restful_server.rb topological_sort.rb
 
 As you can see it's running at http://localhost:4567 you can play with it now.
 
+### Topological sort
+This example executes the topological sort algorithm at a Graph, for example:
+
+```ruby
+it 'should solve simple dependency problem' do
+  graph = Graph.new
+  a = graph.add_node('A')
+  b = graph.add_node('B')
+  c = graph.add_node('C')
+
+  b.dependencies << a
+  c.dependencies << b
+
+  expect(graph.topological_sort.map { |n| n.label }).to eq ['A', 'B', 'C']
+end
+```
+
+This is the same code executed throught the http api:
+
+```ruby
+it 'should solve simple dependencies' do
+  get '/services/GraphFactory/actions/create/invoke'
+  graph_url = JSON.parse(last_response.body)['result']['links'].find { |link| link['rel'] == 'self' }['href']
+
+  get graph_url + '/actions/add_node/invoke', {}, { input: { 'label' => {'value' => 'A'} }.to_json }
+  n1_url = JSON.parse(last_response.body)['result']['links'].find { |link| link['rel'] == 'self' }['href']
+
+  get graph_url + '/actions/add_node/invoke', {}, { input: { 'label' => {'value' => 'B'} }.to_json }
+  n2_url = JSON.parse(last_response.body)['result']['links'].find { |link| link['rel'] == 'self' }['href']
+
+  get graph_url + '/actions/add_node/invoke', {}, { input: { 'label' => {'value' => 'C'} }.to_json }
+  n3_url = JSON.parse(last_response.body)['result']['links'].find { |link| link['rel'] == 'self' }['href']
+
+  put n2_url + '/collections/dependencies', {}, { input: { 'value' => { 'href' => n1_url } }.to_json }
+  put n3_url + '/collections/dependencies', {}, { input: { 'value' => { 'href' => n2_url } }.to_json }
+
+  get graph_url + '/actions/topological_sort/invoke'
+  labels = JSON.parse(last_response.body)['result']['value'].map do |node|
+     get node['href']
+     JSON.parse(last_response.body)['members']['label']['value']
+  end
+
+  expect(labels).to eq ['A', 'B', 'C']
+end
+```
+
 ### Resources
 - [Restful Objects Spec](http://restfulobjects.org/)
 - [Introduction to Restful Objects](http://www.infoq.com/articles/Intro_Restful_Objects)
