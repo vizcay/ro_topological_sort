@@ -1,11 +1,11 @@
-### RO Topological sort
-It's an example application that uses the [Restful Objects for Ruby framework](https://github.com/vizcay/RestfulObjectsRuby).
+### Restful Objects - Topological sort app
+Example application that uses the [Restful Objects for Ruby framework](https://github.com/vizcay/RestfulObjectsRuby).
 
 ### Live demo
-This project is running live as a free Heroku app here: [http://topological-sort.herokuapp.com](http://topological-sort.herokuapp.com).
+This project is running live as a free Heroku app at [http://topological-sort.herokuapp.com](http://topological-sort.herokuapp.com).
 
 ### Running locally - step by step
-1. Be sure you have a running ruby environment of at least 1.9.3 or higher:
+* Be sure you have a running ruby environment of at least 1.9.3 or higher:
 
 ```shell
 $ ruby -v
@@ -13,7 +13,7 @@ ruby 1.9.3p448 (2013-06-27 revision 41675) [x86_64-linux]
 ```
 If not [install ruby](https://www.ruby-lang.org/en/installation/) first.
 
-2. Bundler is the gem library manager for Ruby, check it is installed:
+* Bundler is the gem library manager for Ruby, check it is installed:
 
 ```shell
 $ bundle -v
@@ -26,13 +26,13 @@ If not, install it by running:
 $ gem install bundler
 ```
 
-3. Clone this repository with git:
+* Clone this repository with git:
 
 ```shell
 $ git clone https://github.com/vizcay/ro_topological_sort.git
 ```
 
-4. Start the application server
+* Start the application server
 
 ```shell
 $ cd ro_topological_sort
