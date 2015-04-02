@@ -1,55 +1,42 @@
-require 'restful_objects'
+class Nodo
+  attr_accessor :nombre, :dependencias, :visitado
 
-class Node
-  include RestfulObjects::Object
-
-  property   :label,        :string
-  property   :visited,      :bool
-  collection :dependencies, Node
-end
-
-class Graph
-  include RestfulObjects::Object
-
-  collection :nodes, Node
-  action :topological_sort, return_type: { list: Node }
-  action :add_node,         return_type: { object: Node }, parameters: { label: :string }
-
-  def add_node(label)
-    n = Node.new
-    n.label = label
-    nodes << n
-    n
+  def initialize(nombre, dependencias = [])
+    @nombre       = nombre
+    @dependencias = dependencias
+    @visitado     = false
   end
 
-  def topological_sort
-    list = []
-    nodes.each { |node| node.visited = false }
-    unvisited_nodes = nodes
-    while not unvisited_nodes.empty? do
-      visit(unvisited_nodes.pop, list)
+  def to_s
+    @nombre
+  end
+end
+
+class Grafo
+  attr_accessor :nodos, :lista_ordenada
+
+  def initialize
+    @nodos = []
+  end
+
+  def ordenamiento_topologico
+    @lista_ordenada = []
+    nodos_sin_visitar = nodos.dup
+    until nodos_sin_visitar.empty? do
+      visitar(nodos_sin_visitar.pop)
     end
-    list
+    @lista_ordenada
   end
 
   private
 
-  def visit(node, list)
-    if !node.visited
-      node.dependencies.each { |dependent_node| visit(dependent_node, list) }
-      node.visited = true
-      list << node
+  def visitar(nodo)
+    unless nodo.visitado
+      nodo.dependencias.each do |dependencia|
+        visitar(dependencia)
+      end
+      nodo.visitado = true
+      @lista_ordenada << nodo
     end
   end
 end
-
-class GraphFactory
-  include RestfulObjects::Service
-
-  action :create, return_type: { object: Graph }
-
-  def create
-    Graph.new
-  end
-end
-
