@@ -1,4 +1,4 @@
-require_relative 'topological_sort_1'
+require_relative 'topological_sort'
 
 grafo     = Grafo.new
 assembler = Nodo.new('Assembler')
