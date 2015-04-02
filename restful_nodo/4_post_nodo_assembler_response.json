@@ -1,0 +1,67 @@
+{
+  "instanceId": "69887157721520",
+  "title": "Nodo (69887157721520)",
+  "members": {
+    "nombre": {
+      "memberType": "property",
+      "value": "Assembler",
+      "links": [
+        {
+          "rel": "urn:org.restfulobjects:rels/details;property=\"nombre\"",
+          "href": "http://localhost:4567/objects/Nodo/69887157721520/properties/nombre",
+          "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object-property\"",
+          "method": "GET"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "nombre",
+        "description": "nombre",
+        "returnType": "string",
+        "format": "string",
+        "optional": true,
+        "memberOrder": 1
+      }
+    },
+    "dependencias": {
+      "memberType": "collection",
+      "size": 1,
+      "links": [
+        {
+          "rel": "urn:org.restfulobjects:rels/details;collection=\"dependencias\"",
+          "href": "http://localhost:4567/objects/Nodo/69887157721520/collections/dependencias",
+          "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object-collection\"",
+          "method": "GET"
+        }
+      ],
+      "extensions": {
+        "friendlyName": "dependencias",
+        "description": "dependencias",
+        "returnType": "list",
+        "elementType": "Nodo",
+        "memberOrder": 1,
+        "pluralForm": null
+      }
+    }
+  },
+  "links": [
+    {
+      "rel": "describedby",
+      "href": "http://localhost:4567/domain-types/Nodo",
+      "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/domain-type\"",
+      "method": "GET"
+    },
+    {
+      "rel": "self",
+      "href": "http://localhost:4567/objects/Nodo/69887157721520",
+      "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object\"",
+      "method": "GET"
+    }
+  ],
+  "extensions": {
+    "domainType": "Nodo",
+    "friendlyName": "",
+    "pluralName": "",
+    "description": "",
+    "isService": false
+  }
+}

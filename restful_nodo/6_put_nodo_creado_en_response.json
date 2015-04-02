@@ -1,0 +1,42 @@
+{
+  "creado_en": {
+    "value": "1949-05-06",
+    "links": [
+      {
+        "rel": "self",
+        "href": "http://localhost:4567/objects/Nodo/70007542844860/properties/creado_en",
+        "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object-property\"",
+        "method": "GET"
+      },
+      {
+        "rel": "up",
+        "href": "http://localhost:4567/objects/Nodo/70007542844860",
+        "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object\"",
+        "method": "GET"
+      },
+      {
+        "rel": "urn:org.restfulobjects:rels/modify;property=\"creado_en\"",
+        "href": "http://localhost:4567/objects/Nodo/70007542844860/properties/creado_en",
+        "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object-property\"",
+        "method": "PUT",
+        "arguments": {
+          "value": null
+        }
+      },
+      {
+        "rel": "urn:org.restfulobjects:rels/clear;property=\"creado_en\"",
+        "href": "http://localhost:4567/objects/Nodo/70007542844860/properties/creado_en",
+        "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/object-property\"",
+        "method": "DELETE"
+      }
+    ],
+    "extensions": {
+      "friendlyName": "creado_en",
+      "description": "creado_en",
+      "returnType": "date",
+      "format": null,
+      "optional": true,
+      "memberOrder": 2
+    }
+  }
+}

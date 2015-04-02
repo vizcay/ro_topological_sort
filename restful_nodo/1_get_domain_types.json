@@ -1,0 +1,24 @@
+{
+  "value": [
+    {
+      "rel": "urn:org.restfulobjects:rels/domain-type",
+      "href": "http://localhost:4567/domain-types/Nodo",
+      "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/domain-type\"",
+      "method": "GET"
+    }
+  ],
+  "links": [
+    {
+      "rel": "self",
+      "href": "http://localhost:4567/domain-types",
+      "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/type-list\"",
+      "method": "GET"
+    },
+    {
+      "rel": "up",
+      "href": "http://localhost:4567/",
+      "type": "application/json;profile=\"urn:org.restfulobjects:repr-types/homepage\"",
+      "method": "GET"
+    }
+  ]
+}
