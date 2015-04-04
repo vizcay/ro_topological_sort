@@ -3,10 +3,9 @@ require 'restful_objects'
 class Nodo
   include RestfulObjects::Object
 
-  attr_accessor :visitado
-
   property :nombre, :string
   collection :dependencias, Nodo
+  attr_accessor :visitado
 
   def initialize
     super
@@ -15,10 +14,6 @@ class Nodo
 
   def nombre=(value)
     @nombre = @title = value
-  end
-
-  def to_s
-    @nombre
   end
 end
 

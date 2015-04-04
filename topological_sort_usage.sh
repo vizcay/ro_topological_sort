@@ -1,38 +1,57 @@
 #!/bin/bash
 
-GRAFO_ID=`echo '{ "members": { } }' | curl http://localhost:4567/objects/Grafo --silent --data @- | jq .instanceId | tr -d '"'`
+SERVER=http://localhost:4567
+
+# 1. Crear objecto Grafo
+GRAFO='{ "members": { } }'
+GRAFO_ID=`echo $GRAFO | curl $SERVER/objects/Grafo --silent --data @- | jq .instanceId | tr -d '"'`
+
+# 2. Crear cada Nodo representando un lenguaje
+ADD_NODO="$SERVER/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke"
 
 ASSEMBLER='{ "nombre": { "value": "Assembler" } }'
+ASSEMBLER_ID=`echo $ASSEMBLER | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
 FORTRAN='{ "nombre": { "value": "Fortran" } }'
-C='{_ID "nombre": { "value": "C" } }'
+FORTRAN_ID=`echo $FORTRAN | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
+C='{ "nombre": { "value": "C" } }'
+C_ID=`echo $C | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
 LISP='{ "nombre": { "value": "LISP" } }'
+LISP_ID=`echo $LISP | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
 SMALLTALK='{ "nombre": { "value": "Smalltalk" } }'
+SMALLTALK_ID=`echo $SMALLTALK | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
 PERL='{ "nombre": { "value": "Perl" } }'
+PERL_ID=`echo $PERL | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+
 RUBY='{ "nombre": { "value": "Ruby" } }'
+RUBY_ID=`echo $RUBY | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
 
-ASSEMBLER_ID=`echo $ASSEMBLER | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-FORTRAN_ID=`echo $FORTRAN | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-C_ID=`echo $C | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-LISP_ID=`echo $LISP | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-SMALLTALK_ID=`echo $SMALLTALK | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-PERL_ID=`echo $PERL | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
-RUBY_ID=`echo $RUBY | curl --silent --data @- http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke | jq .result.instanceId | tr -d '"'`
+# 3. Agregar en las dependencias de cada lenguaje otro sobre el que se basó
 
-REF_ASSEMBLER="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$ASSEMBLER_ID\" } }"
-REF_FORTRAN="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$FORTRAN_ID\" } }"
-REF_C="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$C_ID\" } }"
-REF_SMALLTALK="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$SMALLTALK_ID\" } }"
-REF_LISP="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$LISP_ID\" } }"
-REF_PERL="{ \"value\": { \"href\": \"http://localhost:4567/objects/Nodo/$PERL_ID\" } }"
+REF_ASSEMBLER="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$ASSEMBLER_ID\" } }"
+REF_FORTRAN="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$FORTRAN_ID\" } }"
+REF_C="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$C_ID\" } }"
+REF_SMALLTALK="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$SMALLTALK_ID\" } }"
+REF_LISP="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$LISP_ID\" } }"
+REF_PERL="{ \"value\": { \"href\": \"$SERVER/objects/Nodo/$PERL_ID\" } }"
 
-echo $REF_ASSEMBLER | curl --silent --data @- http://localhost:4567/objects/Nodo/$FORTRAN_ID/collections/dependencias > /dev/null
-echo $REF_ASSEMBLER | curl --silent --data @- http://localhost:4567/objects/Nodo/$C_ID/collections/dependencias > /dev/null
-echo $REF_FORTRAN | curl --silent --data @- http://localhost:4567/objects/Nodo/$C_ID/collections/dependencias > /dev/null
-echo $REF_ASSEMBLER | curl --silent --data @- http://localhost:4567/objects/Nodo/$LISP_ID/collections/dependencias > /dev/null
-echo $REF_FORTRAN | curl --silent --data @- http://localhost:4567/objects/Nodo/$SMALLTALK_ID/collections/dependencias > /dev/null
-echo $REF_C | curl --silent --data @- http://localhost:4567/objects/Nodo/$PERL_ID/collections/dependencias > /dev/null
-echo $REF_SMALLTALK | curl --silent --data @- http://localhost:4567/objects/Nodo/$RUBY_ID/collections/dependencias > /dev/null
-echo $REF_LISP | curl --silent --data @- http://localhost:4567/objects/Nodo/$RUBY_ID/collections/dependencias > /dev/null
-echo $REF_PERL | curl --silent --data @- http://localhost:4567/objects/Nodo/$RUBY_ID/collections/dependencias > /dev/null
+NODO="$SERVER/objects/Nodo"
+echo $REF_ASSEMBLER | curl --data @- $NODO/$FORTRAN_ID/collections/dependencias &> /dev/null
+echo $REF_ASSEMBLER | curl --data @- $NODO/$C_ID/collections/dependencias &> /dev/null
+echo $REF_FORTRAN | curl --data @- $NODO/$C_ID/collections/dependencias &> /dev/null
+echo $REF_ASSEMBLER | curl --data @- $NODO/$LISP_ID/collections/dependencias &> /dev/null
+echo $REF_FORTRAN | curl --data @- $NODO/$SMALLTALK_ID/collections/dependencias &> /dev/null
+echo $REF_C | curl --data @- $NODO/$PERL_ID/collections/dependencias &> /dev/null
+echo $REF_SMALLTALK | curl --data @- $NODO/$RUBY_ID/collections/dependencias &> /dev/null
+echo $REF_LISP | curl --data @- $NODO/$RUBY_ID/collections/dependencias &> /dev/null
+echo $REF_PERL | curl --data @- $NODO/$RUBY_ID/collections/dependencias &> /dev/null
 
-curl --silent http://localhost:4567/objects/Grafo/$GRAFO_ID/actions/ordenamiento_topologico/invoke | jq ".result.value | .[] | .title"
+# 4. Ejecutar la acción de ordenamiento topológico
+RESULT=`curl --silent $SERVER/objects/Grafo/$GRAFO_ID/actions/ordenamiento_topologico/invoke`
+
+# 5. Procesar JSON resultante, extrayendo solo el título de cada Nodo (lenguaje)
+echo $RESULT | jq ".result.value | .[] | .title"
