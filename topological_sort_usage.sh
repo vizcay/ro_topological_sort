@@ -4,31 +4,31 @@ SERVER=http://localhost:4567
 
 # 1. Crear objecto Grafo
 GRAFO='{ "members": { } }'
-GRAFO_ID=`echo $GRAFO | curl $SERVER/objects/Grafo --silent --data @- | jq .instanceId | tr -d '"'`
+GRAFO_ID=`echo $GRAFO | curl $SERVER/objects/Grafo --silent --data @- | jq -r .instanceId`
 
 # 2. Crear cada Nodo representando un lenguaje
 ADD_NODO="$SERVER/objects/Grafo/$GRAFO_ID/actions/agregar_nodo/invoke"
 
 ASSEMBLER='{ "nombre": { "value": "Assembler" } }'
-ASSEMBLER_ID=`echo $ASSEMBLER | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+ASSEMBLER_ID=`echo $ASSEMBLER | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 FORTRAN='{ "nombre": { "value": "Fortran" } }'
-FORTRAN_ID=`echo $FORTRAN | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+FORTRAN_ID=`echo $FORTRAN | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 C='{ "nombre": { "value": "C" } }'
-C_ID=`echo $C | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+C_ID=`echo $C | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 LISP='{ "nombre": { "value": "LISP" } }'
-LISP_ID=`echo $LISP | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+LISP_ID=`echo $LISP | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 SMALLTALK='{ "nombre": { "value": "Smalltalk" } }'
-SMALLTALK_ID=`echo $SMALLTALK | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+SMALLTALK_ID=`echo $SMALLTALK | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 PERL='{ "nombre": { "value": "Perl" } }'
-PERL_ID=`echo $PERL | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+PERL_ID=`echo $PERL | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 RUBY='{ "nombre": { "value": "Ruby" } }'
-RUBY_ID=`echo $RUBY | curl --silent --data @- $ADD_NODO | jq .result.instanceId | tr -d '"'`
+RUBY_ID=`echo $RUBY | curl --silent --data @- $ADD_NODO | jq -r .result.instanceId`
 
 # 3. Agregar en las dependencias de cada lenguaje otro sobre el que se basó
 
@@ -54,4 +54,4 @@ echo $REF_PERL | curl --data @- $NODO/$RUBY_ID/collections/dependencias &> /dev/
 RESULT=`curl --silent $SERVER/objects/Grafo/$GRAFO_ID/actions/ordenamiento_topologico/invoke`
 
 # 5. Procesar JSON resultante, extrayendo solo el título de cada Nodo (lenguaje)
-echo $RESULT | jq ".result.value | .[] | .title"
+echo $RESULT | jq -r ".result.value | .[] | .title"
