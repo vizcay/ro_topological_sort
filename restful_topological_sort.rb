@@ -25,14 +25,15 @@ class Grafo
   action :ordenamiento_topologico, return_type: { list: Nodo }
 
   def agregar_nodo(nombre)
-    Nodo.new.tap do |n|
-      n.nombre = nombre
-      nodos << n
-    end
+    nodo = Nodo.new
+    nodos.nombre = nombre
+    nodos << nodo
+    return nodo
   end
 
   def ordenamiento_topologico
     @lista_ordenada = []
+    nodos.each { |nodo| nodo.visitado = false }
     nodos_sin_visitar = nodos.dup
     until nodos_sin_visitar.empty? do
       visitar(nodos_sin_visitar.pop)
